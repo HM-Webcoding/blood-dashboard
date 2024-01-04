@@ -1,8 +1,10 @@
 import { useFormik } from 'formik'
 import React from 'react'
 import AddFormValid from '../../Validation/AddFormValid';
+import { getDatabase, push, ref, set } from "firebase/database";
 
 const AddDonar = () => {
+  const db = getDatabase();
 
   const formik = useFormik({
     initialValues: {
@@ -17,10 +19,26 @@ const AddDonar = () => {
       fullAddress: "",
     },
     validationSchema: AddFormValid,
-    onSubmit: values => {
-      console.log(values);
+    onSubmit: () => {
+      postUserData()
     },
   });
+  
+  const postUserData = () => {
+    set(push(ref(db, 'users/'), {
+      fullName: formik.values.fullName,
+      gender: formik.values.gender,
+      bloodGroup: formik.values.bloodGroup,
+      dateOfBirth: formik.values.dateOfBirth,
+      email: formik.values.email,
+      mobile: formik.values.mobile,
+      city: formik.values.city,
+      lastDonate: formik.values.lastDonate,
+      fullAddress: formik.values.fullAddress,
+    })).then(()=>{
+      alert("succesful")
+    })
+  }
   
   const handleReset = () => {
     return formik.resetForm()
@@ -29,13 +47,16 @@ const AddDonar = () => {
   return (
     
     <>
-      <div className="w-10/12 bg-whiteColor p-10 my-7 mx-auto rounded-2xl shadow-primaryShadow h-4/6 overflow-scroll overflow-x-hidden scrollbar-thin scrollbar-track-primaryColor scrollbar-thumb-headingColor">
+      <div className="w-10/12 h-full bg-whiteColor p-10 my-7 mx-auto rounded-2xl shadow-primaryShadow overflow-scroll overflow-x-hidden scrollbar-thin scrollbar-track-primaryColor scrollbar-thumb-headingColor">
         <div className="text-center mb-4">
           <h2 className="font-bold text-xl text-primaryColor">Add New Donor</h2>
           <p className="text-headingColor">Put your info to be a donor</p>
         </div>
         <form onSubmit={formik.handleSubmit}>
           <div className="grid grid-cols-2 grid-flow-row gap-3">
+            <div className="col-span-2">
+              <h1>id: </h1>
+            </div>
             {/* full name input field */}
             <div className="col-span-1">
               <label htmlFor="fullName" class="text-sm font-medium text-headingColor">Full Name</label>

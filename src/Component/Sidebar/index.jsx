@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 const Sidebar = () => {
   return (
     <>
-      <div className="h-fullbg-primaryColor px-3 ">
+      <div className=" px-3 ">
         <div className="font-bold text-sm pt-11 pb-7 border-b border-boarderColor"> 
           <Flex className="items-center gap-3">
           <span className="text-primaryColor text-xl"><BiSolidDonateHeart/> </span> Donate Blood
